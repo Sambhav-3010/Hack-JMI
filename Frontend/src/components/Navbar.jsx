@@ -7,18 +7,23 @@ const Navbar = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [arrow, setArrow] = useState(arrow_down)
+  const [arrow, setArrow] = useState(arrow_down);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('http://localhost:5000/auth/validate', {
-          credentials: 'include' 
+        const response = await fetch("http://localhost:5000/auth/validate", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Cookie": document.cookie,
+          },
         });
-        
+
         if (response.ok) {
-          const data = await response.json();
-          setCurrentUser(data.user);
+          const data = {"username": "Welcome"};
+          setCurrentUser(data.username);
         } else {
           setCurrentUser(null);
         }
@@ -27,7 +32,7 @@ const Navbar = () => {
         setCurrentUser(null);
       }
     };
-  
+
     checkAuth();
   }, []);
 
@@ -104,7 +109,7 @@ const Navbar = () => {
                     className="flex items-center justify-center"
                   >
                     <h3 className="px-2 border-2 border-gray-20 mr-2 rounded-xl">
-                      {currentUser.username}
+                      {currentUser}
                     </h3>
                     <img
                       className="h-[15px]"
